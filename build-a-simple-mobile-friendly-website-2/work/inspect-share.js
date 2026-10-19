@@ -1,0 +1,1 @@
+const fs=require('fs');const s=fs.readFileSync('outputs/index.html','utf8');for(const marker of ['function save(){','function renderRoom(r){','function newOuting(){','function deleteRoom(){','function shareRoom(){','applyTheme();render();']){let i=s.indexOf(marker);console.log('\n### '+marker+' '+i);console.log(s.slice(i,i+500))}

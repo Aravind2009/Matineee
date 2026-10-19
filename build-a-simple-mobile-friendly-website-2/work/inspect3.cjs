@@ -1,0 +1,1 @@
+const fs=require('fs');const s=fs.readFileSync('outputs/index.html','utf8');for(let m of ['function renderRoom','${r.ownerToken?','function newOuting(){','function shareRoom(){','function setSyncBadge']){let i=s.indexOf(m);console.log('\n'+m+': '+s.slice(i,i+330))}

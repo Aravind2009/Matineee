@@ -1,0 +1,1 @@
+const fs=require('fs');const p='outputs/index.html';let s=fs.readFileSync(p,'utf8');const a=s.indexOf('function selectRoom'),b=s.indexOf('function openForm');if(a<0||b<a)throw Error('render boundaries missing');s=s.slice(0,a)+fs.readFileSync('work/render.txt','utf8')+'\n'+s.slice(b);fs.writeFileSync(p,s)

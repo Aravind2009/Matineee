@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS shared_movie_rooms (
+  code_hash TEXT PRIMARY KEY,
+  owner_hash TEXT NOT NULL,
+  room_data JSONB NOT NULL,
+  version INTEGER NOT NULL DEFAULT 1,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+

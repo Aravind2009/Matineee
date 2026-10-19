@@ -1,0 +1,1 @@
+const fs=require('fs');const s=fs.readFileSync('outputs/index.html','utf8');let a=s.indexOf('function selectRoom');let b=s.indexOf('function personCard');console.log('a b',a,b);console.log(s.slice(b,b+500));

@@ -1,0 +1,13 @@
+const fs=require('fs');const p='outputs/index.html';let s=fs.readFileSync(p,'utf8');
+let pairs=[
+['<div class="field"><label>Payment step</label><select id="state">','<div class="field"><label>Entry type</label><select id="kind"><option value="payment">Payment</option><option value="refund">Refund</option></select><div class="radio-hint">A confirmed refund reduces the attendee’s net paid amount.</div></div><div class="field"><label>Payment step</label><select id="state">'],
+['amount:Math.round(a*100),method:val(\'method\'),state:val(\'state\'),note:val(\'note\')','amount:Math.round(a*100)*(val(\'kind\')===\'refund\'?-1:1),method:val(\'method\'),state:val(\'kind\')===\'refund\'?\'received\':val(\'state\'),note:val(\'note\')'],
+['<div class="field"><label>Payment step</label><select id="state"><option value="sent" ${t.state===\'sent\'?\'selected\':\'\'}>Attendee marked sent</option>','<div class="field"><label>Entry type</label><select id="kind"><option value="payment" ${t.amount>=0?\'selected\':\'\'}>Payment</option><option value="refund" ${t.amount<0?\'selected\':\'\'}>Refund</option></select></div><div class="field"><label>Payment step</label><select id="state"><option value="sent" ${t.state===\'sent\'?\'selected\':\'\'}>Attendee marked sent</option>'],
+['amount:Math.round(a*100),method:val(\'method\'),state:val(\'state\'),note:val(\'note\')','amount:Math.round(a*100)*(val(\'kind\')===\'refund\'?-1:1),method:val(\'method\'),state:val(\'kind\')===\'refund\'?\'received\':val(\'state\'),note:val(\'note\')']
+];
+for(const [a,b] of pairs){let i=s.indexOf(a);console.log('replace',i,a.slice(0,30));if(i>=0)s=s.slice(0,i)+b+s.slice(i+a.length)}
+s=s.replace('value="${(t.amount/100).toFixed(2)}"','value="${(Math.abs(t.amount)/100).toFixed(2)}"');
+// Validate a refund cannot exceed the confirmed net amount, and show refunds as debits in activity.
+s=s.replace("let a=Number(val('amount'));if(!a||a<0)return toast('Enter a valid amount');r.payments.push({id:id(),person:val('person'),amount:Math.round(a*100)*(val('kind')==='refund'?-1:1)","let a=Number(val('amount')),person=val('person'),refund=val('kind')==='refund';if(!a||a<0)return toast('Enter a valid amount');if(refund&&Math.round(a*100)>Math.max(0,received(r,person)))return toast('Refund cannot exceed confirmed payments');r.payments.push({id:id(),person,amount:Math.round(a*100)*(refund?-1:1)");
+s=s.replace("amount:Math.round(a*100)*(val('kind')==='refund'?-1:1),method:val('method'),state:val('kind')==='refund'?'received':val('state'),note:val('note')","amount:Math.round(a*100)*(val('kind')==='refund'?-1:1),method:val('method'),state:val('kind')==='refund'?'received':val('state'),note:val('note')");
+fs.writeFileSync(p,s);

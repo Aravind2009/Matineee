@@ -1,0 +1,1 @@
+const fs=require('fs');let s=fs.readFileSync('outputs/index.html','utf8');for(let x=s.indexOf('function bookerShares');x>=0;x=s.indexOf('function bookerShares',x+1))console.log(JSON.stringify(s.slice(x,x+600)));

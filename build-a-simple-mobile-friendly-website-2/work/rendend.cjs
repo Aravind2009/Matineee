@@ -1,0 +1,1 @@
+const fs=require('fs');const s=fs.readFileSync('outputs/index.html','utf8');let i=s.indexOf('function openForm');console.log(JSON.stringify(s.slice(i-150,i+50)));console.log('renders',s.match(/function renderRoom/g)?.length,'bookerShares',s.match(/function bookerShares/g)?.length)

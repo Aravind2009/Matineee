@@ -1,0 +1,1 @@
+const fs=require('fs');let s=fs.readFileSync('outputs/index.html','utf8');for(const q of ['function total(r)','remaining owed by others','Payment step</label><select id="state"']){const i=s.indexOf(q);console.log(q, i, JSON.stringify(s.slice(i,i+240)))}

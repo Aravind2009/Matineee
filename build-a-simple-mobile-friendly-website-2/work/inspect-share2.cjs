@@ -1,0 +1,1 @@
+const fs=require('fs');const s=fs.readFileSync('outputs/index.html','utf8');for(const m of ['function newOuting(){','async()=>{if(!val','function render(){','<div class="room-code">','applyTheme();render();']){const i=s.indexOf(m);console.log('\n'+m+' @ '+i+'\n'+s.slice(i,i+420))}

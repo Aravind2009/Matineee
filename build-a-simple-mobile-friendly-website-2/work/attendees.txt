@@ -1,0 +1,19 @@
+function addPerson(){personForm()}
+function personForm(pid){
+ const r=room(),p=r.people.find(x=>x.id===pid),count=livePeople(r).length+(p?0:1),share=count?Math.floor(bookedTotal(r)/count):0;
+ const note=p?'Names only; the equal split stays the same.':count+' people will split '+money(bookedTotal(r))+' equally: about '+money(share)+' each. Adding this name recalculates everyone’s share.';
+ const body='<div class="field"><label>Name *</label><input id="name" value="'+esc(p?.name||'')+'" placeholder="Friend’s name"></div><div class="hint">'+note+' Payments already entered stay in the history.</div>';
+ openForm(p?'Edit attendee':'Add attendee',body,()=>{
+  const name=val('name');if(!name)return toast('Enter a name');
+  if(r.people.some(x=>x.active&&x.name.toLowerCase()===name.toLowerCase()&&x.id!==pid))return toast('That person is already in this room');
+  if(p){p.name=name}else{r.people.push({id:id(),name,active:true});recalculate(r)}
+  save();closeModal();render();toast(p?'Attendee updated':'Equal shares updated')
+ })
+}
+function editPerson(pid){personForm(pid)}
+function dropPerson(pid){
+ const r=room(),p=r.people.find(x=>x.id===pid),nextCount=Math.max(0,livePeople(r).length-1),newShare=nextCount?Math.floor(bookedTotal(r)/nextCount):0;
+ if(!confirm('Remove '+p.name+' from active attendees? The equal split changes from about '+money(splitCents(r))+' to '+money(newShare)+' per person for the remaining '+nextCount+'. Their '+money(received(r,pid))+' received and '+money(sent(r,pid))+' sent payment history will stay in this room.'))return;
+ p.active=false;recalculate(r);save();render();toast('Attendee archived; equal shares recalculated')
+}
+function deleteRoom(){const r=room();if(!r)return;if(!confirm('Delete “'+r.movie+'” and all of its attendee and payment records from this browser? This cannot be undone.'))return;db.rooms=db.rooms.filter(x=>x.id!==r.id);selected=db.rooms[0]?.id||null;db.active=selected;save();render();toast('Movie room deleted')}
